@@ -203,5 +203,8 @@ Indexing Strategy:
 
 - Index on inventory_id in inventory_movements for reporting
 
+  <img width="2076" height="1155" alt="erd (2)" src="https://github.com/user-attachments/assets/99390433-e3bf-4a59-9dd2-9c41429c7a1b" />
+
+
 
 
