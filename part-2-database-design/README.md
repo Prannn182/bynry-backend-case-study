@@ -70,62 +70,68 @@ PRIMARY KEY (bundle_product_id, child_product_id)
 Represents bundled products composed of other products.
 
 2. Missing Requirements & Questions for Product Team
-To finalize the design, the following questions should be clarified:
-Can a product belong to multiple suppliers, or is there a primary supplier?
+- To finalize the design, the following questions should be clarified:
+- Can a product belong to multiple suppliers, or is there a primary supplier?
 
 
-How should inventory be handled when a bundle is sold?
+- How should inventory be handled when a bundle is sold?
 
 
-Should inventory movements be created automatically for all stock changes?
+- Should inventory movements be created automatically for all stock changes?
 
 
-What defines “recent sales activity” for reporting and alerts?
+- What defines “recent sales activity” for reporting and alerts?
 
 
-Are low-stock thresholds configurable per warehouse or globally?
+- Are low-stock thresholds configurable per warehouse or globally?
 
 
-Should deleted products retain inventory history?
+- Should deleted products retain inventory history?
 
 
-Can warehouses transfer inventory between each other?
-3. Design Decisions & Justifications
-Separation of Product and Inventory
-Allows products to exist in multiple warehouses
+- Can warehouses transfer inventory between each other?
+3. Design Decisions & Justifications:
+  
+- Separation of Product and Inventory
+
+- Allows products to exist in multiple warehouses
 
 
-Prevents duplication of product data
+- Prevents duplication of product data
 
 
-Composite Unique Constraints
-Prevents duplicate inventory rows per product and warehouse
+Composite Unique Constraints:
+- Prevents duplicate inventory rows per product and warehouse
 
 
-Ensures data consistency
+- Ensures data consistency
 
 
-Inventory Movements Table
-Enables auditing and historical analysis
+Inventory Movements Table:
+- Enables auditing and historical analysis
 
 
-Supports analytics and alerting features
+- Supports analytics and alerting features
 
 
-Bundle Table Design
-Allows flexible product composition
+Bundle Table Design: 
+- Allows flexible product composition
 
 
-Supports future expansion (nested bundles)
+- Supports future expansion (nested bundles)
 
 
 
 
-Indexing Strategy
-Index on sku for fast product lookup
+Indexing Strategy:
+
+- Index on sku for fast product lookup
 
 
-Composite index on (product_id, warehouse_id) for inventory queries
+- Composite index on (product_id, warehouse_id) for inventory queries
 
 
-Index on inventory_id in inventory_movements for reporting
+- Index on inventory_id in inventory_movements for reporting
+
+<img width="4606" height="2166" alt="erd" src="https://github.com/user-attachments/assets/6be1157d-5d25-4885-9744-16a41e7d57c5" />
+
