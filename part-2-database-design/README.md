@@ -5,31 +5,31 @@ Since the requirements are intentionally incomplete, this design makes reasonabl
 1.1 Companies:
 companies
 id                  UUID PRIMARY KEY
-name             VARCHAR(255)
-created_at      TIMESTAMP
+name                VARCHAR(255)
+created_at         TIMESTAMP
 Represents a customer using the platform.
 
 1.2 Warehouses
 warehouses
 id                     UUID PRIMARY KEY
-company_id     UUID REFERENCES companies(id)
-name                VARCHAR(255)
-location             VARCHAR(255)
-created_at        TIMESTAMP
+company_id             UUID REFERENCES companies(id)
+name                   VARCHAR(255)
+location              VARCHAR(255)
+created_at           TIMESTAMP
 1.3 Products
 products
 id                      UUID PRIMARY KEY
-company_id      UUID REFERENCES companies(id)
-name               VARCHAR(255)
-sku                  VARCHAR(100) UNIQUE
-price                DECIMAL(10,2)
-product_type    VARCHAR(50)
-created_at       TIMESTAMP
+company_id               UUID REFERENCES companies(id)
+name                     VARCHAR(255)
+sku                    VARCHAR(100) UNIQUE
+price                  DECIMAL(10,2)
+product_type          VARCHAR(50)
+created_at           TIMESTAMP
 1.4 Inventory
 inventory
 id                    UUID PRIMARY KEY
-product_id       UUID REFERENCES products(id)
-warehouse_id    UUID REFERENCES warehouses(id)
+product_id            UUID REFERENCES products(id)
+warehouse_id          UUID REFERENCES warehouses(id)
 quantity              INTEGER
 updated_at         TIMESTAMP
 UNIQUE (product_id, warehouse_id)
