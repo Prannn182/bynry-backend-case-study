@@ -69,6 +69,76 @@ quantity            INTEGER
 PRIMARY KEY (bundle_product_id, child_product_id)
 Represents bundled products composed of other products.
 
+# SQL DDL Scripts
+-- 1.1 Companies
+CREATE TABLE companies (
+    id UUID PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 1.2 Warehouses
+CREATE TABLE warehouses (
+    id UUID PRIMARY KEY,
+    company_id UUID NOT NULL REFERENCES companies(id),
+    name VARCHAR(255),
+    location VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 1.3 Products
+CREATE TABLE products (
+    id UUID PRIMARY KEY,
+    company_id UUID NOT NULL REFERENCES companies(id),
+    name VARCHAR(255),
+    sku VARCHAR(100) UNIQUE NOT NULL,
+    price DECIMAL(10,2),
+    product_type VARCHAR(50), -- e.g., 'simple', 'bundle'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 1.6 Suppliers
+CREATE TABLE suppliers (
+    id UUID PRIMARY KEY,
+    name VARCHAR(255),
+    contact_email VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 1.4 Inventory
+CREATE TABLE inventory (
+    id UUID PRIMARY KEY,
+    product_id UUID NOT NULL REFERENCES products(id),
+    warehouse_id UUID NOT NULL REFERENCES warehouses(id),
+    quantity INTEGER DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (product_id, warehouse_id)
+);
+
+-- 1.5 Inventory Movements
+CREATE TABLE inventory_movements (
+    id UUID PRIMARY KEY,
+    inventory_id UUID NOT NULL REFERENCES inventory(id),
+    change_quantity INTEGER NOT NULL,
+    reason VARCHAR(100), -- e.g., 'sale', 'restock', 'correction'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 1.7 Product-Supplier Mapping
+CREATE TABLE product_suppliers (
+    product_id UUID REFERENCES products(id),
+    supplier_id UUID REFERENCES suppliers(id),
+    PRIMARY KEY (product_id, supplier_id)
+);
+
+-- 1.8 Product Bundles
+CREATE TABLE product_bundles (
+    bundle_product_id UUID REFERENCES products(id),
+    child_product_id UUID REFERENCES products(id),
+    quantity INTEGER NOT NULL, -- Qty of child needed for the bundle
+    PRIMARY KEY (bundle_product_id, child_product_id)
+);
+
 2. Missing Requirements & Questions for Product Team
 - To finalize the design, the following questions should be clarified:
 - Can a product belong to multiple suppliers, or is there a primary supplier?
@@ -133,5 +203,5 @@ Indexing Strategy:
 
 - Index on inventory_id in inventory_movements for reporting
 
-<img width="4606" height="2166" alt="erd" src="https://github.com/user-attachments/assets/6be1157d-5d25-4885-9744-16a41e7d57c5" />
+
 
